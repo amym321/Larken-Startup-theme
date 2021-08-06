@@ -1,0 +1,45 @@
+<div id="larken-html">
+
+  {% for block in section.blocks %}  
+  <div>{{ block.settings.section_html }}</div>
+  {% endfor %}
+
+</div>  
+     
+{% schema %}
+
+
+{
+  "name": "HTML",
+	"max_blocks": 1,
+
+  "blocks": [
+    {
+      "type": "select",
+      "name": "Add HTML",
+      "settings": [
+      
+ {
+ 	"type": "html",
+      "id": "section_html",
+      "label": "HTML"
+    }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Additional HTML",
+      "category": "CODE"
+    }
+  ]
+}
+
+
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

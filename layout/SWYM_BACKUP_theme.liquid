@@ -1,0 +1,149 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie10 lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie10 lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie10 lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="ie9 lt-ie10 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  {% if template == 'index' %}
+    <title>{{ shop.name }} | {{ page_title }}</title>
+  {% elsif template == '404' %}
+    <title>Page Not Found | {{ shop.name }}</title>
+  {% else %}
+    <title>{{ page_title }} | {{ shop.name }}</title>
+  {% endif %}
+
+  {% if settings.favicon %}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
+  {% endif %}
+
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}" />
+  {% endif %}
+
+  {% if template contains 'collection' and current_tags %}
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="{{ shop.url }}{{ collection.url }}" />
+  {% else %}
+    <link rel="canonical" href="{{ canonical_url }}" />
+  {% endif %}
+
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  {{ content_for_header }}
+
+  {% assign twitter_handle = settings.social_twitter_url | split: 'twitter.com/' | last %}
+  {%
+    include 'social-meta-tags',
+    twitter_handle: twitter_handle
+  %}
+
+  <!-- Theme CSS -->
+  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+  {{ 'larken.css'| asset_url | stylesheet_tag }}
+
+  <!-- Third Party JS Libraries -->
+  {{ 'modernizr-2.7.1.min.js' | asset_url | script_tag }}
+
+  <!-- Store object -->
+  {% include 'theme-options' %}
+ 
+ 
+  
+  <!-- Tapfilliate -->
+  <script src="https://script.tapfiliate.com/tapfiliate.js" type="text/javascript" async></script>
+<script type="text/javascript">
+    (function(t,a,p){t.TapfiliateObject=a;t[a]=t[a]||function(){
+    (t[a].q=t[a].q||[]).push(arguments)}})(window,'tap');
+
+    tap('create', '9832-c3caf6', { integration: "shopify" });
+    tap('detect');
+</script>
+  
+  
+  
+  
+ 
+  
+ 
+  
+ 
+  
+ 
+  
+ 
+ {{ 'wiremo-styles.scss' | asset_url | stylesheet_tag }} 
+ {% include "wiremo-installed" %}
+ <!-- GSSTART Coming Soon code start. Do not change -->
+<script type="text/javascript"> gsProductByVariant = {}; {% if product.id > 1 %}{% for variant in product.variants %} gsProductByVariant[{{variant.id}}] = {% if variant.available %} 1 {% else %} 0 {% endif %}; {% endfor %}{% endif %}  gsProductCSID = "{{ product.id }}"; gsDefaultV = "{{ product.selected_or_first_available_variant.id }}"; </script><script type="text/javascript" src="https://gravity-software.com/js/shopify/pac_shop15971.js?v=4b4d2e493b8d03d9e49b646ac323f8ea"></script>
+<!-- Coming Soon code end. Do not change GSEND -->
+  {% render 'shogun-head' %}
+</head>
+
+<body class="template-{{ template | replace: '.', '-' | handle }} {% if customer %}customer-logged-in{% endif %}">
+
+  {% section 'general-header' %}
+
+  <main
+    class="main-content"
+    role="main"
+    data-main-content>
+
+    {% unless template contains 'index' or template contains 'product' %}
+       {% include 'breadcrumbs' %}
+    {% endunless %}
+
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'general-footer' %}
+
+  <!-- Scripts -->
+  {{ 'jquery-1.10.0.min.js' | asset_url | script_tag }}
+  {{ 'api.jquery.js' | shopify_asset_url | script_tag }}
+
+  {% if template contains 'cart' %}
+    {{ '/services/javascripts/countries.js' | script_tag }}
+    {{ "shopify_common.js" | shopify_asset_url | script_tag }}
+    {{ 'jquery.cart.min.js' | asset_url | script_tag }}
+  {% endif %}
+
+  {% if template contains 'customers' %}
+    {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+    {{ 'customer_area.js'  | shopify_asset_url | script_tag }}
+  {% endif %}
+
+  <script type="application/json" data-currency-data>
+    {
+      "enable": {{ settings.enable_currency_converter | default: false }},
+      "shopCurrency": {{ shop.currency | json }},
+      "defaultCurrency": {{ settings.currency_converter_default | default: shop.currency | json }},
+      "displayFormat": {{ settings.currency_display_format | json }},
+      "moneyFormat": {{ shop[settings.currency_display_format] | default: shop.money_format | strip_html | json }},
+      "moneyFormatNoCurrency": {{ shop.money_format | strip_html | json }},
+      "moneyFormatCurrency": {{ shop.money_with_currency_format | strip_html | json }}
+    }
+  </script>
+
+  {% if settings.enable_currency_converter %}
+    {{ "//cdn.shopify.com/s/javascripts/currencies.js" | script_tag }}
+  {% endif %}
+
+  {{ 'startup.js'  | asset_url | script_tag }}
+
+  {% include 'structured-data' %}
+  
+ <div class="index-section--flush powr-popup" id="2a306d52_1580507848"></div>
+ 
+<!-- Back in Stock helper snippet -->
+{% render 'back-in-stock-helper' %}
+<!-- End Back in Stock helper snippet -->
+{% include 'subscribe-it-helper' %}
+{% include 'swymSnippet' %}
+
+</body> 
+</html>

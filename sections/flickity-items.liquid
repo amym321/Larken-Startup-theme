@@ -1,0 +1,118 @@
+{% comment %}
+  * Make sure you have the Flickity plugin installed and the proper license for this to function on your store
+  * Plugin, licensing and documentation at https://flickity.metafizzy.co/
+{% endcomment %}
+
+{% assign wrap_around = section.settings.wrap_around %}
+<div style="text-align:center;margin-top:-60px;"><h1 class="larken-title"><span class="larken-highlight">Testimonials</span></h1></div>
+
+<div class="flickity-section-{{ section.id }} flickity-index-slider item" style="background-color: {{ section.settings.bg }}">
+  <div style="max-width:1020px;margin:0 auto">
+
+    <div class="flickity-section__carousel carousel-{{section.id }}" style="text-align:center"
+        data-flickity='{
+     
+          "pageDots": false,
+          "freeScroll": false,
+          "autoPlay": 18500,            
+          "contain": true,
+          "wrapAround": {{ wrap_around }}
+        }'>
+      {% for block in section.blocks %}  
+        <div class="carousel__cell" style="width:{{ section.settings.cell_width }}">
+          <div> {{ block.settings.html_area }} </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Flickity Item Section",
+    "settings": [
+      {
+        "type": "color",
+        "id": "bg",
+        "label": "Background Color"
+      },
+
+
+      {
+        "type": "select",
+        "id": "cell_width",
+        "label": "Choose number of slides to show on start",
+        "options": [
+		  {
+            "value": "100%",
+            "label": "One"
+          },
+		  {
+            "value": "50%",
+            "label": "Two"
+          },
+		  {
+            "value": "33.333%",
+            "label": "Three"
+          }
+        ],
+        "default": "100%"
+      },
+      {
+        "type": "radio",
+        "id": "wrap_around",
+        "label": "Enable Wrap Around (endless scrolling)",
+        "options": [
+          {
+            "value": "true",
+            "label": "True"
+          },
+          {
+            "value": "false",
+            "label": "False"
+          }
+        ],
+        "default": "true"
+      }
+    ],
+
+
+
+
+
+    "blocks": [
+      {
+        "type": "slide",
+        "name": "slide",
+        "settings": [
+          {
+            "type": "html",
+   "id": "html_area",
+   "label": "Custom HTML",
+   "default": "<div><p>Some HTML content</p></div>"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Flickity Item Section",
+        "category": "Slider",
+        "blocks": [
+          {
+            "type": "slide"
+          },
+          {
+            "type": "slide"
+          },
+          {
+            "type": "slide"
+          },
+          {
+            "type": "slide"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

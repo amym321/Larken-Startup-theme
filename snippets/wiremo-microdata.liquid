@@ -1,0 +1,42 @@
+
+{%- assign microdata = product.metafields.WIREMO_PRODUCTS -%}
+{% if microdata.WIREMO != blank and microdata.WIREMO.statistics.reviewCount != 0 %}
+<script type ="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Product",
+    "name": "{{product.title | escape}}",
+    "url": "{{shop.url | append: product.url | escape}}",
+    "sameAs": ["{{shop.url | append: product.url | escape}}"],
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "{{microdata.WIREMO.statistics.averageRating | escape}}",
+        "reviewCount": "{{microdata.WIREMO.statistics.reviewCount | escape}}",
+        "worstRating": 1,
+        "bestRating": 5
+    },
+    "review": [
+        {% for review in  microdata.WIREMO.reviews%}
+        {
+        "@type": "Review",
+        "author": {
+            "name": "{{review.name | escape}}",
+            "@type": "Person"
+        },
+        "datePublished": "{{review.datePublished | escape}}",
+        "description": "{{review.message | escape}}",
+        "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "{{review.rating | escape}}",
+            "bestRating": 5,
+            "worstRating": 1
+        }
+        }
+        {% if forloop.last == false %}
+        ,
+        {% endif %}
+    {% endfor %}
+    ]
+}
+</script>
+{% endif %}

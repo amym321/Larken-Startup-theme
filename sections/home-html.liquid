@@ -1,0 +1,84 @@
+<section
+  class="module-container {{ section.settings.style }} {% if section.settings.show_borders %}borders{% endif %}"
+  data-section-id="{{ section.id }}" 
+  data-section-type="text">
+
+  <div class="module-inner">
+    {% for block in section.blocks %}
+      <div class="home-text-feature">
+        {% if block.settings.title != blank %}
+          <h1 class="feature-title">{{ block.settings.title | escape }}</h1>
+        {% endif %}
+
+        {% if block.type == 'rich_text' and block.settings.content != blank %}
+          <div class="rte home-text-content">{{ block.settings.content }}</div>
+        {% endif %}
+
+        {% if block.type == 'page' and block.settings.page != blank %}
+          {% assign page_content = pages[block.settings.page].content %}
+          {% if page_content != blank %}
+            <div class="rte">{{ pages[block.settings.page].content }}</div>
+          {% endif %}
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Custom HTML",
+  
+  "blocks": [
+    {
+      "type": "textarea",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Heading",
+          "default": "Rich text"
+        },
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Text",
+          "default": "<p>Use this section to welcome customers to your store, say a bit about your brand, or share news and seasonal promotions.</p>"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Heading",
+          "default": "Page content"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Text",
+      "name": "Custom HTML",
+      "blocks": [
+        {
+          "type": "textarea"
+        }
+      ]
+    }
+  ]
+
+}
+
+{% endschema %}
