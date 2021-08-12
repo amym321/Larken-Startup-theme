@@ -6,40 +6,6 @@
       style="clear: left; margin: 30px 0"
       class="clearfix rte"
     >
-      <!-- <p>
-        <input
-          id="gift-with-purchase"
-          type="checkbox"
-          name="attributes[gift-with-purchase]"
-          value="yes"
-          {%
-          if
-          cart.attributes.gift-with-purchase
-          %}
-          checked="checked"
-          {%
-          endif
-          %}
-          style="float: none"
-        /> -->
-
-        
-        <!-- <label
-          for="gift-with-purchase"
-          style="display:inline; padding-left: 5px; float: none;"
-        >
-          For {{ linklists.gift-with-purchase.links.first.object.price | money }}
-          please wrap the products in this order.
-        </label>
-      </p>
-      <p>
-        <label style="display:block" for="gift-note"
-          >Gift message (free and optional):</label
-        >
-        <textarea name="attributes[gift-note]" id="gift-note">
-    {{ cart.attributes.gift-note }}</textarea
-        >
-      </p> -->
     </div>
     
     {% assign id = linklists.gift-with-purchase.links.first.object.variants.first.id
@@ -85,12 +51,11 @@
         });
       }
     
-      // If we have nothing but gift-with-purchase items in the cart.
+      // If we have items in cart but no gift-with-purchase in the cart yet.
       {% if cart.items.size > 0 and gift_purchase_in_cart == 0 %}
       document.addEventListener("DOMContentLoaded", function(){
         Shopify.Cart.GiftWithPurchase.set();
       });
-
 
       // If we have nothing but gift-with-purchase items in the cart.
       {% elsif cart.items.size == 1 and gift_purchase_in_cart > 0 %}
@@ -114,30 +79,6 @@
       });
       {% endif %}
     
-      // When the gift-with-purchase checkbox is checked or unchecked.
-    //   document.addEventListener("DOMContentLoaded", function(){
-    //     document.querySelector('[name="attributes[gift-with-purchase]"]').addEventListener("change", function(event) {
-    //       if (event.target.checked) {
-    //         Shopify.Cart.GiftWithPurchase.set();
-    //       } else {
-    //         Shopify.Cart.GiftWithPurchase.remove();
-    //       }
-    
-    //     });
-    
-    //     document.querySelector('#gift-note').addEventListener("change", function(evt) {
-    //       var note = evt.target.value;
-    //       var headers = new Headers({ 'Content-Type': 'application/json' });
-    
-    //       var request = {
-    //         method: 'POST',
-    //         headers: headers,
-    //         body: JSON.stringify({ attributes: { 'gift-note': note } })
-    //       };
-    
-    //       fetch('/cart/update.js', request);
-    //     });
-    //   });
     </script>
     
     {% else %}
