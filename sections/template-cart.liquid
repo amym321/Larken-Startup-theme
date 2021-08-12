@@ -17,6 +17,10 @@
 
 <h1 class="page-title larken-title"><span class="larken-highlight">{{ 'cart.general.header' | t }}</span></h1>
 
+<!-- added code - am. added free-shipping-bar. tells customer how much more to spend before getting free shipping -->
+{% render 'free-shipping-bar' %}
+<br>
+
 {% if cart.item_count > 0 %}
   <form
     class="cart"
@@ -105,6 +109,10 @@
         {% endif %}
       </div>
     </div>
+
+    <!-- added code - am. added gift-with-purchase -->
+    {% render 'gift-with-purchase' %}
+
   </form>
 
   {% if section.settings.show_shipping_calculator and cart.requires_shipping %}

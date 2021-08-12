@@ -1,0 +1,158 @@
+{% if linklists.gift-with-purchase.links.size > 0 and
+    linklists.gift-with-purchase.links.first.type == 'product_link' %}
+    
+    <div
+      id="is-a-gift"
+      style="clear: left; margin: 30px 0"
+      class="clearfix rte"
+    >
+      <!-- <p>
+        <input
+          id="gift-with-purchase"
+          type="checkbox"
+          name="attributes[gift-with-purchase]"
+          value="yes"
+          {%
+          if
+          cart.attributes.gift-with-purchase
+          %}
+          checked="checked"
+          {%
+          endif
+          %}
+          style="float: none"
+        /> -->
+
+        
+        <!-- <label
+          for="gift-with-purchase"
+          style="display:inline; padding-left: 5px; float: none;"
+        >
+          For {{ linklists.gift-with-purchase.links.first.object.price | money }}
+          please wrap the products in this order.
+        </label>
+      </p>
+      <p>
+        <label style="display:block" for="gift-note"
+          >Gift message (free and optional):</label
+        >
+        <textarea name="attributes[gift-note]" id="gift-note">
+    {{ cart.attributes.gift-note }}</textarea
+        >
+      </p> -->
+    </div>
+    
+    {% assign id = linklists.gift-with-purchase.links.first.object.variants.first.id
+    %} {% assign gift_purchase_in_cart = 0 %} {% for item in cart.items %} {% if
+    item.id == id %} {% assign gift_purchase_in_cart = item.quantity %} {% endif %}
+    {% endfor %}
+    
+    <style>
+      #updates_{{ id }} { display: none; }
+    </style>
+    
+    <script>
+    
+      Shopify.Cart = Shopify.Cart || {};
+    
+      Shopify.Cart.GiftWithPurchase = {};
+    
+      Shopify.Cart.GiftWithPurchase.set = function() {
+        var headers = new Headers({ 'Content-Type': 'application/json' });
+    
+        var request = {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({ updates: { {{ id }}: 1 }, attributes: { 'gift-with-purchase': true } })
+        };
+        fetch('/cart/update.js', request)
+        .then(function() {
+          location.href = '/cart';
+        });
+      }
+    
+      Shopify.Cart.GiftWithPurchase.remove = function() {
+        var headers = new Headers({ 'Content-Type': 'application/json' });
+    
+        var request = {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({ updates: { {{ id }}: 0 }, attributes: { 'gift-with-purchase': '', 'gift-note': '' } })
+        };
+        fetch('/cart/update.js', request)
+        .then(function() {
+          location.href = '/cart';
+        });
+      }
+    
+      // If we have nothing but gift-with-purchase items in the cart.
+      {% if cart.items.size > 0 and gift_purchase_in_cart == 0 %}
+      document.addEventListener("DOMContentLoaded", function(){
+        Shopify.Cart.GiftWithPurchase.set();
+      });
+
+
+      // If we have nothing but gift-with-purchase items in the cart.
+      {% elsif cart.items.size == 1 and gift_purchase_in_cart > 0 %}
+      document.addEventListener("DOMContentLoaded", function(){
+        Shopify.Cart.GiftWithPurchase.remove();
+      });
+      // If we have more than one gift-with-purchase item in the cart.
+      {% elsif gift_purchase_in_cart > 1 %}
+      document.addEventListener("DOMContentLoaded", function(){
+        Shopify.Cart.GiftWithPurchase.set();
+      });
+      // If we have a gift-with-purchase item in the cart but our gift-with-purchase cart attribute has not been set.
+      {% elsif gift_purchase_in_cart > 0 and cart.attributes.gift-with-purchase == blank  %}
+      document.addEventListener("DOMContentLoaded", function(){
+        Shopify.Cart.GiftWithPurchase.set();
+      });
+      // If we have no gift-with-purchase item in the cart but our gift-with-purchase cart attribute has been set.
+      {% elsif gift_purchase_in_cart == 0 and cart.attributes.gift-with-purchase != blank  %}
+      document.addEventListener("DOMContentLoaded", function(){
+        Shopify.Cart.GiftWithPurchase.set();
+      });
+      {% endif %}
+    
+      // When the gift-with-purchase checkbox is checked or unchecked.
+    //   document.addEventListener("DOMContentLoaded", function(){
+    //     document.querySelector('[name="attributes[gift-with-purchase]"]').addEventListener("change", function(event) {
+    //       if (event.target.checked) {
+    //         Shopify.Cart.GiftWithPurchase.set();
+    //       } else {
+    //         Shopify.Cart.GiftWithPurchase.remove();
+    //       }
+    
+    //     });
+    
+    //     document.querySelector('#gift-note').addEventListener("change", function(evt) {
+    //       var note = evt.target.value;
+    //       var headers = new Headers({ 'Content-Type': 'application/json' });
+    
+    //       var request = {
+    //         method: 'POST',
+    //         headers: headers,
+    //         body: JSON.stringify({ attributes: { 'gift-note': note } })
+    //       };
+    
+    //       fetch('/cart/update.js', request);
+    //     });
+    //   });
+    </script>
+    
+    {% else %}
+    
+    <p style="clear: left; margin: 30px 0" class="rte">
+      You attempted to add a gift-with-purchase script to your shopping cart, but it
+      won't work because you don't have a link list with handle
+      <code>gift-with-purchase</code> which, in turn, contains a link to your
+      gift-with-purchase product. Please review the steps outlined
+      <a
+        href="https://help.shopify.com/manual/online-store/themes/os/customize/add-gift-wrap-option"
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+        >here</a
+      >.
+    </p>
+    
+    {% endif %}

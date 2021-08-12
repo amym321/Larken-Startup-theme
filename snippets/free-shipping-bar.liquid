@@ -1,0 +1,36 @@
+{% comment %}
+Free Shipping Bar. Tells customers how much more they have to spend
+to get free shipping.
+{% endcomment %}
+
+{% if cart.total_price < 5000 %}
+<p class="almost-free larken-title">You're <span>{{ 5000 | minus: cart.total_price | money }}</span> away from free shipping!</p>
+{% else %}
+<p class="free-ship larken-title"><b>YOU'VE UNLOCKED FREE SHIPPING!</b></p>
+{% endif %}
+
+<style>
+    .almost-free, .free-ship {
+      text-align:center;
+      width:100%;
+      display:block;
+      padding:15px 10px;
+      margin:0 auto 5px;
+    }
+    .almost-free {
+      color:  #808285;
+      background-color:#ccd7e0;
+    }
+    .free-ship {
+      color: white;
+      background-color: #c8b6a4;
+    }
+    @media screen and (min-width: 720px) {
+    .almost-free {
+        width:60%;
+    }
+    .free-ship {
+        width:60%;
+        }
+    }
+  </style>
