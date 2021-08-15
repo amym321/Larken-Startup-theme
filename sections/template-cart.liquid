@@ -17,9 +17,11 @@
 
 <h1 class="page-title larken-title"><span class="larken-highlight">{{ 'cart.general.header' | t }}</span></h1>
 
-<!-- added code - am. added free-shipping-bar. tells customer how much more to spend before getting free shipping -->
+<!-- added code - am. added free-shipping-bar -->
+{% comment %} 
 {% render 'free-shipping-bar' %}
 <br>
+{% endcomment %}
 
 {% if cart.item_count > 0 %}
   <form
