@@ -49,10 +49,6 @@
     {% assign show_promotion = false %}
   {% endif %}
 
-  {% comment %} code added - am. remove announcement on cart only {% endcomment %} 
-	{% if template == 'cart' %}
-  {% else %}
-
     {% if show_promotion and password_page == false %}
       <div class="header-promotion-bar {{ section.settings.promotion_style }}" data-promotion-bar>
         {% if section.settings.promotion_url != blank %}
@@ -66,9 +62,6 @@
         {% endif %}
       </div>
     {% endif %}
-
-  {% endif %}
-
 
   <header class="main-header" role="banner" data-header-content>
 
